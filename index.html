@@ -9,34 +9,33 @@
   <title>Flashcards!</title>
 </head>
 <body>
-  
-  <h1>Flashcards!</h1>
+  <div id="flashcard-app" class="container">
+    <h1>Flashcards!</h1>
 
-  <h1>Flashcard App!</h1>
+    <div class="flashcard-form">
+      <label for="front">Front
+        <input v-model="newFront" type="text" id="front">
+      </label>
+      <label for="back">Back
+        <input v-on:keypress.enter="addNew" v-model="newBack" type="text" id="back">
+      </label>
+      <button v-on:click="addNew">Add a New Card</button>
+      <span v-show="error" class="error">Oops! Flashcards need a front and a back.</span>
+    </div>
 
-  <div class="flashcard-form">
-    <label for="front">Front
-      <input v-model="newFront" type="text" id="front">
-    </label>
-    <label for="back">Back
-      <input v-on:keypress.enter="addNew" v-model="newBack" type="text" id="back">
-    </label>
-    <button v-on:click="addNew">Add a New Card</button>
-    <span v-show="error" class="error">Oops! Flashcards need a front and a back.</span>
+    <ul class="flashcard-list">
+      <li v-on:click="toggleCard(card)" v-for="(card, index) in cards">
+        <transition name="flip">
+          <p v-if="!card.flipped" key="front" class="card">{{card.front}}
+              <span v-on:click="cards.splice(index,1)" class="delete-card">X</span>
+          </p>
+          <p v-else key="back" class="card">{{card.back}}
+              <span v-on:click="cards.splice(index,1)" class="delete-card">X</span>
+          </p>
+        </transition>
+      </li>
+    </ul>
   </div>
-
-  <ul class="flashcard-list">
-    <li v-on:click="toggleCard(card)" v-for="(card, index) in cards">
-      <transition name="flip">
-        <p v-if="!card.flipped" key="front" class="card">{{card.front}}
-            <span v-on:click="cards.splice(index,1)" class="delete-card">X</span>
-        </p>
-        <p v-else key="back" class="card">{{card.back}}
-            <span v-on:click="cards.splice(index,1)" class="delete-card">X</span>
-        </p>
-      </transition>
-    </li>
-  </ul>
 
   <script src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"></script>
   <script src="app.js"></script>
